@@ -1,85 +1,131 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 
-class Filters extends Component {
-
+class InputFilter extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
-      searchName: ''
+      filterValue: ''
     }
+    this.changeHandler = this.changeHandler.bind(this)
   }
 
-  updateSearchName(event) {
-    console.log(event.target.value);
-    this.setState({searchName: event.target.value});
+  changeHandler(e) {
+    this.setState({filterValue: e.target.value})
+    this.props.filterFunction(e.target.value);
   }
 
   render() {
     return (
-    <div>
-      <input type="text" name="name"
-        value={this.state.searchName}
-        onChange={this.updateSearchName.bind(this)}
-      />
-    </div>
-    )
+      <div>
+        <input value={this.state.filterValue} onChange={this.changeHandler} />
+        <select id="select_categoria" className="select-options form-control">
+          {this.props.categorias.map(item =>
+            <option key={item} value="{item}">{item}</option>
+            )}
+        </select>
+        <select id="select_distancia" className="select-options form-control">
+          {this.props.distancia.map(item =>
+            <option key={item} value="{item}">{item}</option>
+            )}
+        </select>
+      </div>
+      )
   }
 }
 
+const ShowData = ({data}) => {
+  let html = data.map((item) => {
+    return <tr key={item.Num}>
+      <td>{item.Num}</td>
+      <td>{item.Nombres}</td>
+      <td>{item.Apellidos}</td>
+      <td>{item.Categoria}</td>
+      <td>{item.Dist}</td>
+      <td>{item.Time}</td></tr>
+  })
+  return (
+    <table>
+      <thead>
+        <tr>
+          <th>Num</th>
+          <th>Firstname</th>
+          <th>Lastname</th> 
+          <th>Categoria</th>
+          <th>Distancia</th>
+          <th>Time</th>
+        </tr>
+      </thead>
+      <tbody>
+        {html}
+      </tbody>
+    </table>
+    )
+}
 
-function Results({data}) {
-  console.log(data);
-  var html = data.map(function(item){
-    console.log(item);
-    return <div>
-        {item.NOMBRES}
+class Results extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      data: [],
+      filterValue: ''
+    }
+    this.getFilterValue = this.getFilterValue.bind(this)
+  }
+
+  componentWillMount() {
+    this.loadData(this.props.endpoint);
+  }
+
+  loadData(endpoint) {
+    fetch(endpoint, {method: 'get'})
+    .then((response) => response.json())
+    .then((data) => {this.setState({data:data})})
+    .catch((err) => console.log(err))
+  }
+
+  getFilterValue(filterValue) {
+    this.setState({filterValue: filterValue});
+  }
+
+  getUniqueList(list, key) {
+    return Array.from(new Set(list.map(item => item[key]))).sort()
+  }
+
+  render() {
+      let filteredList = this.state.data
+        .filter((item) => item.Nombres.indexOf(this.state.filterValue) >= 0)
+        .slice(0, 100)
+
+    return (
+      <div>
+        <h1>Race Example</h1>
+        <InputFilter 
+          filterFunction={this.getFilterValue} 
+          categorias={this.getUniqueList(this.state.data, 'Categoria')}
+          distancia={this.getUniqueList(this.state.data, 'Dist')}
+        />
+        <ShowData data={filteredList} />
       </div>
-  });
-  return html;
+      )
+  }
+
 }
 
 class App extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: []
-    }
-  }
-
-  componentWillMount() {
-    const raceDataFileLocation = '/race-example.json';
-    this.loadFile(raceDataFileLocation);
-  }
-
-  loadFile(endpointFeed) {
-    fetch(endpointFeed, {
-      method: 'get'
-    })
-    .then((response) => response.json())
-    .then(function(data) {
-        this.setState({data: data});
-        console.log(data);
-      }.bind(this))
-    .catch(function(err) {
-        console.log(err);
-      });    
-  }
-
   render() {
+    const filename = 'race-all.json'
+
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Maratón Virgen de la Candelaria 2018</h1>
-        </header>
-        <Filters />
-        <Results data={this.state.data} />
+      <div>
+        <div className="right">
+          <Results endpoint={filename} />
+        </div>
       </div>
-    );
+      )
   }
+
 }
 
 export default App;

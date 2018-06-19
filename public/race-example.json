@@ -1,8 +1,8 @@
 [
-{"num":5110,"sexo":"F","APELLIDOS":"Holgado Mamani","NOMBRES":"Aracely Lucero","CATEGORIA":"Escolar Sub 12","T.OFICAL":"00:21:15","T.CHIP":"00:20:58"},
-{"NUM.":5115,"SEXO":"F","APELLIDOS":"Pucho Corimanya","NOMBRES":"Analu","CATEGORIA":"Escolar Sub 14","T.OFICAL":"00:21:54","T.CHIP":"00:21:35"},
-{"NUM.":5109,"SEXO":"F","APELLIDOS":"Mamani Baleriano","NOMBRES":"Ruth Lisbeth","CATEGORIA":"Escolar Sub 12","T.OFICAL":"00:21:58","T.CHIP":"00:21:39"},
-{"NUM.":5069,"SEXO":"F","APELLIDOS":"Yanque Checca","NOMBRES":"Yenny Gladis","CATEGORIA":"Escolar Sub 14","T.OFICAL":"00:22:03","T.CHIP":"00:21:45"},
-{"NUM.":5111,"SEXO":"F","APELLIDOS":"Ccasa Andia","NOMBRES":"Edith Diana","CATEGORIA":"Escolar Sub 15","T.OFICAL":"00:22:25","T.CHIP":"00:22:08"},
-{"NUM.":5055,"SEXO":"F","APELLIDOS":"Ramirez Ayma","NOMBRES":"Nishiyama Monica","CATEGORIA":"Escolar Sub 12","T.OFICAL":"00:23:15","T.CHIP":"00:22:57"}
+{"Num":5110,"Sexo":"F","Apellidos":"Holgado Mamani","Nombres":"Aracely Lucero","Categoria":"Escolar Sub 12","Time":"00:21:15","Chip":"00:20:58"},
+{"Num":5115,"Sexo":"F","Apellidos":"Pucho Corimanya","Nombres":"Analu","Categoria":"Escolar Sub 14","Time":"00:21:54","Chip":"00:21:35"},
+{"Num":5109,"Sexo":"F","Apellidos":"Mamani Baleriano","Nombres":"Ruth Lisbeth","Categoria":"Escolar Sub 12","Time":"00:21:58","Chip":"00:21:39"},
+{"Num":5069,"Sexo":"F","Apellidos":"Yanque Checca","Nombres":"Yenny Gladis","Categoria":"Escolar Sub 14","Time":"00:22:03","Chip":"00:21:45"},
+{"Num":5111,"Sexo":"F","Apellidos":"Ccasa Andia","Nombres":"Edith Diana","Categoria":"Escolar Sub 15","Time":"00:22:25","Chip":"00:22:08"},
+{"Num":5055,"Sexo":"F","Apellidos":"Ramirez Ayma","Nombres":"Nishiyama Monica","Categoria":"Escolar Sub 12","Time":"00:23:15","Chip":"00:22:57"}
 ]
