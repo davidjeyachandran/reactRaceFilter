@@ -5,27 +5,35 @@ class InputFilter extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      filterValue: ''
+      inputValue: '',
+      distValue: ''
     }
-    this.changeHandler = this.changeHandler.bind(this)
+    this.changeHandlerInput = this.changeHandlerInput.bind(this)
+    this.changeHandlerDist = this.changeHandlerDist.bind(this)
   }
 
-  changeHandler(e) {
-    this.setState({filterValue: e.target.value})
-    this.props.filterFunction(e.target.value);
+  changeHandlerInput(event) {
+    this.setState({inputValue: event.target.value})
+    this.props.filterFunction({inputValue: event.target.value});
+  }
+
+  changeHandlerDist(event) {
+    this.setState({distValue: event.target.value})
+    this.props.filterFunction({distValue: event.target.value});
   }
 
   render() {
     return (
       <div>
-        <input value={this.state.filterValue} onChange={this.changeHandler} />
-        <select id="select_categoria" className="select-options form-control">
-          {this.props.categorias.map(item =>
-            <option key={item} value="{item}">{item}</option>
+        <input value={this.state.inputValue} onChange={this.changeHandlerInput} />
+        <select id="select_distancia" className="select-options form-control" onChange={this.changeHandlerDist}>
+            <option key="0" value="">--Elegir la Distancia --</option>
+          {this.props.distancia.map(item =>
+            <option key={item} value={item}>{item}</option>
             )}
         </select>
-        <select id="select_distancia" className="select-options form-control">
-          {this.props.distancia.map(item =>
+        <select id="select_categoria" className="select-options form-control">
+          {this.props.categorias.map(item =>
             <option key={item} value="{item}">{item}</option>
             )}
         </select>
@@ -40,8 +48,8 @@ const ShowData = ({data}) => {
       <td>{item.Num}</td>
       <td>{item.Nombres}</td>
       <td>{item.Apellidos}</td>
-      <td>{item.Categoria}</td>
       <td>{item.Dist}</td>
+      <td>{item.Categoria}</td>
       <td>{item.Time}</td></tr>
   })
   return (
@@ -51,8 +59,8 @@ const ShowData = ({data}) => {
           <th>Num</th>
           <th>Firstname</th>
           <th>Lastname</th> 
-          <th>Categoria</th>
           <th>Distancia</th>
+          <th>Categoria</th>
           <th>Time</th>
         </tr>
       </thead>
@@ -68,7 +76,8 @@ class Results extends Component {
     super(props)
     this.state = {
       data: [],
-      filterValue: ''
+      inputValue: '',
+      distValue: ''
     }
     this.getFilterValue = this.getFilterValue.bind(this)
   }
@@ -84,8 +93,9 @@ class Results extends Component {
     .catch((err) => console.log(err))
   }
 
-  getFilterValue(filterValue) {
-    this.setState({filterValue: filterValue});
+  getFilterValue(values) {
+    if (values.hasOwnProperty('inputValue')) this.setState({inputValue: values['inputValue']});
+    if (values.hasOwnProperty('distValue')) this.setState({distValue: values['distValue']});
   }
 
   getUniqueList(list, key) {
@@ -93,17 +103,22 @@ class Results extends Component {
   }
 
   render() {
-      let filteredList = this.state.data
-        .filter((item) => item.Nombres.indexOf(this.state.filterValue) >= 0)
-        .slice(0, 100)
+      console.log(this.state.distValue, this.state.inputValue)
+      let filteredList = this.state.data.filter(item => {
+            let name = (item.Nombres + ' ' + item.Apellidos).toLowerCase()
+            return (item.Dist === this.state.distValue || this.state.distValue === '') &&
+            (name.indexOf(this.state.inputValue.toLowerCase()) >= 0 || this.state.inputValue === '')
+            }
+          )
+          .slice(0, 100)
 
     return (
       <div>
         <h1>Race Example</h1>
         <InputFilter 
-          filterFunction={this.getFilterValue} 
-          categorias={this.getUniqueList(this.state.data, 'Categoria')}
+          filterFunction={this.getFilterValue}
           distancia={this.getUniqueList(this.state.data, 'Dist')}
+          categorias={this.getUniqueList(filteredList, 'Categoria')}
         />
         <ShowData data={filteredList} />
       </div>
