@@ -17,7 +17,7 @@ class InputFilter extends Component {
     this.clickHandler = this.clickHandler.bind(this)
   }
 
-  changeHandlerInput(event) {
+  changeHandlerInput(event) { 
     this.setState({inputValue: event.target.value})
     this.props.filterFunction({inputValue: event.target.value});
   }
